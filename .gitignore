@@ -8,3 +8,4 @@ temp/
 database.sqlite
 .env
 .github/dependabot.yml
+.github/workflows/nodejs.yml
