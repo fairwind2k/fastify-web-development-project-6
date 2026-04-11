@@ -19,6 +19,9 @@ docker compose up -d
 # Или с пересборкой
 docker compose up --build
 
+# Перезапустить контейнер без пересборки образа и без переустановки зависимостей
+docker compose restart
+
 # Просмотр логов
 docker compose logs -f
 
