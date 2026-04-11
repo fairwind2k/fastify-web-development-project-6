@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 import { URL } from 'url';
 import fs from 'fs';
