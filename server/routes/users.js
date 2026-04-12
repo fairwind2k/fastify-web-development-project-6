@@ -1,4 +1,3 @@
-// @ts-check
 
 import i18next from 'i18next';
 
@@ -27,6 +26,31 @@ export default (app) => {
         reply.render('users/new', { user, errors: data });
       }
 
+      return reply;
+    })
+    .get('/users/:id/edit', { name: 'editUser' }, async (req, reply) => {
+      const user = await app.objection.models.user.query().findById(req.params.id);
+      reply.render('users/edit', { user });
+      return reply;
+    })
+    .patch('/users/:id', async (req, reply) => {
+      const user = await app.objection.models.user.query().findById(req.params.id);
+
+      try {
+        await user.$query().patchAndFetch(req.body.data);
+        req.flash('info', i18next.t('flash.users.update.success'));
+        reply.redirect(app.reverse('users'));
+      } catch ({ data }) {
+        req.flash('error', i18next.t('flash.users.update.error'));
+        reply.render('users/edit', { user, errors: data });
+      }
+
+      return reply;
+    })
+    .delete('/users/:id', async (req, reply) => {
+      await app.objection.models.user.query().deleteById(req.params.id);
+      req.flash('info', i18next.t('flash.users.delete.success'));
+      reply.redirect(app.reverse('users'));
       return reply;
     });
 };
