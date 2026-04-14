@@ -2,7 +2,7 @@
 
 export default {
   translation: {
-    appName: 'Fastify Boilerplate',
+    appName: 'Task Manager',
     flash: {
       session: {
         create: {
@@ -27,6 +27,7 @@ export default {
         },
       },
       authError: 'Access denied! Please login',
+      accessDenied: 'You can only edit or delete your own account',
     },
     layouts: {
       application: {
@@ -44,18 +45,28 @@ export default {
         },
       },
       users: {
+        index: {
+          title: 'Users',
+        },
         id: 'ID',
         email: 'Email',
+        fullName: 'Full name',
         firstName: 'First name',
         lastName: 'Last name',
+        password: 'Password',
         createdAt: 'Created at',
         new: {
           submit: 'Register',
           signUp: 'Register',
         },
+        actions: 'Actions',
         edit: {
           title: 'Edit user',
           submit: 'Save',
+          link: 'Edit',
+        },
+        delete: {
+          link: 'Delete',
         },
       },
       welcome: {
