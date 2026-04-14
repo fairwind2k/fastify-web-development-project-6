@@ -91,10 +91,16 @@ const registerPlugins = async (app) => {
     },
   });
 
+  // fastifyPassport.registerUserDeserializer(
+  //   (user) => app.objection.models.user.query().findById(user.id),
+  // );
+  // fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
+  // сериализатор сохраняет в сессию весь ORM-объект пользователя, а не только его ID,
+  // а нужно только ID:
   fastifyPassport.registerUserDeserializer(
-    (user) => app.objection.models.user.query().findById(user.id),
+    (id) => app.objection.models.user.query().findById(id),
   );
-  fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
+  fastifyPassport.registerUserSerializer((user) => Promise.resolve(user.id));
   fastifyPassport.use(new FormStrategy('form', app));
   await app.register(fastifyPassport.initialize());
   await app.register(fastifyPassport.secureSession());
