@@ -4,9 +4,31 @@ block header
   = t('views.users.new.signUp')
 
 block content
-  +formFor()(action=route('users') method='post')
-    +input(user, 'email', errors)(type="text")
-    +input(user, 'password', errors)(type="password")
-    +input(user, 'firstName', errors)(type="text")
-    +input(user, 'lastName', errors)(type="text")
-    +submit(user)(value=t('views.users.new.submit'))
+  .row.justify-content-center
+    .col-md-6
+      +formFor()(action=route('users') method='post')
+        .mb-3
+          input.form-control(
+            type="text"
+            name="data[firstName]"
+            placeholder=t('views.users.firstName')
+          )
+        .mb-3
+          input.form-control(
+            type="text"
+            name="data[lastName]"
+            placeholder=t('views.users.lastName')
+          )
+        .mb-3
+          input.form-control(
+            type="text"
+            name="data[email]"
+            placeholder=t('views.users.email')
+          )
+        .mb-3
+          input.form-control(
+            type="password"
+            name="data[password]"
+            placeholder=t('views.users.password')
+          )
+        +submit(user)(value=t('views.users.new.submit'))
