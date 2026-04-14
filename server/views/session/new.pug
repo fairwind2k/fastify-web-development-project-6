@@ -4,7 +4,19 @@ block header
   = t('views.session.new.signIn')
 
 block content
-  +formFor()(action=route('session') method='post')
-    +input(signInForm, 'email', errors)(type="text")
-    +input(signInForm, 'password')(type="password")
-    +submit(signInForm)(value=t('views.session.new.submit'))
+  .row.justify-content-center
+    .col-md-6
+      +formFor()(action=route('session') method='post')
+        .mb-3
+          input.form-control(
+            type="text"
+            name="data[email]"
+            placeholder=t('views.users.email')
+          )
+        .mb-3
+          input.form-control(
+            type="password"
+            name="data[password]"
+            placeholder=t('views.users.password')
+          )
+        +submit(signInForm)(value=t('views.session.new.submit'))
