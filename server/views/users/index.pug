@@ -1,19 +1,26 @@
 extends ../layouts/application.pug
 
+block header
+  = t('views.users.index.title')
+
 block content
   table.table.table-striped
     thead
       tr
         th= t('views.users.id')
+        th= t('views.users.fullName')
         th= t('views.users.email')
-        th= t('views.users.firstName')
-        th= t('views.users.lastName')
         th= t('views.users.createdAt')
+        th= t('views.users.actions')
     tbody
       each user in users
         tr
           td= user.id
           td= user.email
-          td= user.firstName
-          td= user.lastName
+          td= `${user.firstName} ${user.lastName}`
           td= formatDate(user.createdAt)
+          td
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('editUser', { id: user.id }))= t('views.users.edit.link')
+            form.d-inline(action=route('user', { id: user.id }) method='post')
+              input(name="_method" type="hidden" value="DELETE")
+              button.btn.btn-sm.btn-outline-danger(type='submit')= t('views.users.delete.link')
