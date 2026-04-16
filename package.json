@@ -9,7 +9,7 @@
    },
    "scripts": {
       "prebuild": "rm -rf dist",
-      "test": "jest --verbose --runInBand",
+      "test": "NODE_ENV=test jest --verbose --runInBand",
       "build": "webpack",
       "start": "fastify start server/plugin.js -l debug -P -o"
    },
@@ -59,6 +59,7 @@
       "webpack": "^5.105.4"
    },
    "devDependencies": {
+      "@faker-js/faker": "^10.4.0",
       "@jest/globals": "^30.3.0",
       "@types/jest": "^30.0.0",
       "@types/node": "^25.5.0",
