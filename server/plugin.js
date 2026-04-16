@@ -98,7 +98,10 @@ const registerPlugins = async (app) => {
   // сериализатор сохраняет в сессию весь ORM-объект пользователя, а не только его ID,
   // а нужно только ID:
   fastifyPassport.registerUserDeserializer(
-    (id) => app.objection.models.user.query().findById(id),
+    async (id) => {
+      const user = await app.objection.models.user.query().findById(id);
+      return user ?? false;
+    },
   );
   fastifyPassport.registerUserSerializer((user) => Promise.resolve(user.id));
   fastifyPassport.use(new FormStrategy('form', app));

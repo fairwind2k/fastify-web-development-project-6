@@ -64,6 +64,7 @@ export default (app) => {
         return reply;
       }
       await app.objection.models.user.query().deleteById(req.params.id);
+      await req.logOut();
       req.flash('info', i18next.t('flash.users.delete.success'));
       reply.redirect(app.reverse('users'));
       return reply;
