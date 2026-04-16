@@ -26,11 +26,25 @@ export default {
           success: 'User deleted successfully',
         },
       },
+      statuses: {
+        create: {
+          error: 'Failed to create status',
+          success: 'Status created successfully',
+        },
+        update: {
+          error: 'Failed to update status',
+          success: 'Status updated successfully',
+        },
+        delete: {
+          success: 'Status deleted successfully',
+        },
+      },
       authError: 'Access denied! Please login',
       accessDenied: 'You can only edit or delete your own account',
     },
     layouts: {
       application: {
+        statuses: 'Statuses',
         users: 'Users',
         signIn: 'Login',
         signUp: 'Register',
@@ -38,6 +52,28 @@ export default {
       },
     },
     views: {
+      statuses: {
+        index: {
+          title: 'Statuses',
+        },
+        id: 'ID',
+        name: 'Name',
+        createdAt: 'Created at',
+        actions: 'Actions',
+        new: {
+          title: 'Create status',
+          link: 'Create status',
+          submit: 'Create',
+        },
+        edit: {
+          title: 'Edit status',
+          submit: 'Save',
+          link: 'Edit',
+        },
+        delete: {
+          link: 'Delete',
+        },
+      },
       session: {
         new: {
           signIn: 'Login',

@@ -26,11 +26,25 @@ export default {
           success: 'Пользователь успешно удалён',
         },
       },
+      statuses: {
+        create: {
+          error: 'Не удалось создать статус',
+          success: 'Статус успешно создан',
+        },
+        update: {
+          error: 'Не удалось обновить статус',
+          success: 'Статус успешно обновлён',
+        },
+        delete: {
+          success: 'Статус успешно удалён',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
       accessDenied: 'Вы можете редактировать или удалять только свой аккаунт',
     },
     layouts: {
       application: {
+        statuses: 'Статусы',
         users: 'Пользователи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -38,6 +52,28 @@ export default {
       },
     },
     views: {
+      statuses: {
+        index: {
+          title: 'Статусы',
+        },
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        actions: 'Действия',
+        new: {
+          title: 'Создать статус',
+          link: 'Создать статус',
+          submit: 'Создать',
+        },
+        edit: {
+          title: 'Редактирование статуса',
+          submit: 'Сохранить',
+          link: 'Редактировать',
+        },
+        delete: {
+          link: 'Удалить',
+        },
+      },
       session: {
         new: {
           signIn: 'Вход',
