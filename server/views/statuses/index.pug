@@ -1,0 +1,25 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.statuses.index.title')
+
+block content
+  a.btn.btn-primary.mb-3(href=route('newStatus'))= t('views.statuses.new.link')
+  table.table.table-striped
+    thead
+      tr
+        th= t('views.statuses.id')
+        th= t('views.statuses.name')
+        th= t('views.statuses.createdAt')
+        th= t('views.statuses.actions')
+    tbody
+      each status in statuses
+        tr
+          td= status.id
+          td= status.name
+          td= formatDate(status.createdAt)
+          td
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('editStatus', { id: status.id }))= t('views.statuses.edit.link')
+            form.d-inline(action=route('status', { id: status.id }) method='post')
+              input(name="_method" type="hidden" value="DELETE")
+              button.btn.btn-sm.btn-outline-danger(type='submit')= t('views.statuses.delete.link')
