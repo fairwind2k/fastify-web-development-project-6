@@ -9,6 +9,10 @@ const migrations = {
   directory: path.join(__dirname, 'server', 'migrations'),
 };
 
+const pool = {
+  afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
+};
+
 export const development = {
   client: 'sqlite3',
   connection: {
@@ -16,6 +20,7 @@ export const development = {
   },
   useNullAsDefault: true,
   migrations,
+  pool,
 };
 
 export const test = {
@@ -24,6 +29,7 @@ export const test = {
   useNullAsDefault: true,
   // debug: true,
   migrations,
+  pool,
 };
 
 export const production = {
@@ -33,4 +39,5 @@ export const production = {
   },
   useNullAsDefault: true,
   migrations,
+  pool,
 };
