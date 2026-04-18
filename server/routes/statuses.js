@@ -48,8 +48,12 @@ export default (app) => {
       return reply;
     })
     .delete('/statuses/:id', async (req, reply) => {
-      await app.objection.models.status.query().deleteById(req.params.id);
-      req.flash('info', i18next.t('flash.statuses.delete.success'));
+      try {
+        await app.objection.models.status.query().deleteById(req.params.id);
+        req.flash('info', i18next.t('flash.statuses.delete.success'));
+      } catch (e) {
+        req.flash('error', i18next.t('flash.statuses.delete.error'));
+      }
       reply.redirect(app.reverse('statuses'));
       return reply;
     });
