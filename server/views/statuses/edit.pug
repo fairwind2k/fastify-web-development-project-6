@@ -8,5 +8,5 @@ block content
     .col-md-6
       +formFor()(action=route('status', { id: status.id }) method='post')
         input(name="_method" type="hidden" value="PATCH")
-        +input(status, 'name', errors)(type="text")
+        +input(status, 'name', errors, true, t('views.statuses.name'))(type="text" placeholder=t('views.statuses.name'))
         +submit(status)(value=t('views.statuses.edit.submit'))

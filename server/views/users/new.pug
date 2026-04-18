@@ -8,25 +8,33 @@ block content
     .col-md-6
       +formFor()(action=route('users') method='post')
         .mb-3
+          label(for='data_firstName')= t('views.users.firstName')
           input.form-control(
+            id='data_firstName'
             type="text"
             name="data[firstName]"
             placeholder=t('views.users.firstName')
           )
         .mb-3
+          label(for='data_lastName')= t('views.users.lastName')
           input.form-control(
+            id='data_lastName'
             type="text"
             name="data[lastName]"
             placeholder=t('views.users.lastName')
           )
         .mb-3
+          label(for='data_email')= t('views.users.email')
           input.form-control(
+            id='data_email'
             type="text"
             name="data[email]"
             placeholder=t('views.users.email')
           )
         .mb-3
+          label(for='data_password')= t('views.users.password')
           input.form-control(
+            id='data_password'
             type="password"
             name="data[password]"
             placeholder=t('views.users.password')
