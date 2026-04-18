@@ -24,6 +24,7 @@ export default {
         },
         delete: {
           success: 'User deleted successfully',
+          error: 'Failed to delete user',
         },
       },
       statuses: {
@@ -37,6 +38,21 @@ export default {
         },
         delete: {
           success: 'Status deleted successfully',
+          error: 'Failed to delete status',
+        },
+      },
+      tasks: {
+        create: {
+          error: 'Failed to create task',
+          success: 'Task created successfully',
+        },
+        update: {
+          error: 'Failed to update task',
+          success: 'Task updated successfully',
+        },
+        delete: {
+          success: 'Task deleted successfully',
+          error: 'Only the creator can delete a task',
         },
       },
       authError: 'Access denied! Please login',
@@ -44,6 +60,7 @@ export default {
     },
     layouts: {
       application: {
+        tasks: 'Tasks',
         statuses: 'Statuses',
         users: 'Users',
         signIn: 'Login',
@@ -103,6 +120,35 @@ export default {
         },
         delete: {
           link: 'Delete',
+        },
+      },
+      tasks: {
+        index: {
+          title: 'Tasks',
+        },
+        id: 'ID',
+        name: 'Name',
+        description: 'Description',
+        status: 'Status',
+        author: 'Author',
+        executor: 'Executor',
+        createdAt: 'Created at',
+        actions: 'Actions',
+        new: {
+          title: 'Create task',
+          link: 'Create task',
+          submit: 'Create',
+        },
+        edit: {
+          title: 'Edit task',
+          submit: 'Save',
+          link: 'Edit',
+        },
+        delete: {
+          link: 'Delete',
+        },
+        show: {
+          link: 'View',
         },
       },
       welcome: {
