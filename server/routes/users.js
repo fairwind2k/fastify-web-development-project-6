@@ -63,9 +63,13 @@ export default (app) => {
         reply.redirect(app.reverse('root'));
         return reply;
       }
-      await app.objection.models.user.query().deleteById(req.params.id);
-      await req.logOut();
-      req.flash('info', i18next.t('flash.users.delete.success'));
+      try {
+        await app.objection.models.user.query().deleteById(req.params.id);
+        await req.logOut();
+        req.flash('info', i18next.t('flash.users.delete.success'));
+      } catch (e) {
+        req.flash('error', i18next.t('flash.users.delete.error'));
+      }
       reply.redirect(app.reverse('users'));
       return reply;
     });

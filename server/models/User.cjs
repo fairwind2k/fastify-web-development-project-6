@@ -28,6 +28,10 @@ module.exports = class User extends unique(BaseModel) {
     this.passwordDigest = encrypt(value);
   }
 
+  get name() {
+    return [this.firstName, this.lastName].filter(Boolean).join(' ');
+  }
+
   verifyPassword(password) {
     return encrypt(password) === this.passwordDigest;
   }
