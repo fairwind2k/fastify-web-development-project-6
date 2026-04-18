@@ -1,0 +1,27 @@
+extends ../layouts/application.pug
+
+block header
+  = task.name
+
+block content
+  .mb-3
+    strong= t('views.tasks.status')
+    |
+    = task.status.name
+  .mb-3
+    strong= t('views.tasks.author')
+    |
+    = task.creator.name
+  if task.executor
+    .mb-3
+      strong= t('views.tasks.executor')
+      |
+      = task.executor.name
+  if task.description
+    .mb-3
+      p= task.description
+  .mt-4
+    a.btn.btn-primary.me-2(href=route('editTask', { id: task.id }))= t('views.tasks.edit.link')
+    form.d-inline(action=route('updateTask', { id: task.id }) method='post')
+      input(name='_method' type='hidden' value='DELETE')
+      button.btn.btn-danger(type='submit')= t('views.tasks.delete.link')
