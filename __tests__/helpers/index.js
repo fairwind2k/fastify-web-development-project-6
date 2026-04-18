@@ -37,6 +37,25 @@ export const createStatus = async (app, params = {}) => {
   return { ...statusData, id: status.id };
 };
 
+export const buildTask = (params = {}) => ({
+  name: faker.word.words(),
+  description: faker.lorem.sentence(),
+  ...params,
+});
+
+export const createTask = async (app, { statusId, creatorId, executorId = null, ...params } = {}) => {
+  const { knex } = app.objection;
+  const taskData = buildTask(params);
+  const [id] = await knex('tasks').insert({
+    name: taskData.name,
+    description: taskData.description,
+    status_id: statusId,
+    creator_id: creatorId,
+    executor_id: executorId,
+  });
+  return { ...taskData, id, statusId, creatorId, executorId };
+};
+
 export const signIn = async (app, { email, password }) => {
   const response = await app.inject({
     method: 'POST',
