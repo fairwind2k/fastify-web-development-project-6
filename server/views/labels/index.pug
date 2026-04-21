@@ -1,0 +1,25 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.labels.index.title')
+
+block content
+  a.btn.btn-primary.mb-3(href=route('newLabel'))= t('views.labels.new.link')
+  table.table.table-striped
+    thead
+      tr
+        th= t('views.labels.id')
+        th= t('views.labels.name')
+        th= t('views.labels.createdAt')
+        th
+    tbody
+      each label in labels
+        tr
+          td= label.id
+          td= label.name
+          td= formatDate(label.createdAt)
+          td
+            a.btn.btn-sm.btn-outline-primary.me-2(href=route('editLabel', { id: label.id }))= t('views.labels.edit.link')
+            form.d-inline(action=route('label', { id: label.id }) method='post')
+              input(name="_method" type="hidden" value="DELETE")
+              button.btn.btn-sm.btn-outline-danger(type='submit')= t('views.labels.delete.link')
