@@ -9,26 +9,32 @@ export default (app) => {
     })
     .get('/tasks/new', { name: 'newTask', preValidation: app.authenticate }, async (req, reply) => {
       const task = new app.objection.models.task();
-      const statuses = await app.objection.models.status.query();
-      const users = await app.objection.models.user.query();
-      reply.render('tasks/new', { task, statuses, users });
+      const [statuses, users, labels] = await Promise.all([
+        app.objection.models.status.query(),
+        app.objection.models.user.query(),
+        app.objection.models.label.query(),
+      ]);
+      reply.render('tasks/new', { task, statuses, users, labels });
       return reply;
     })
     .get('/tasks/:id', { name: 'task' }, async (req, reply) => {
-      const task = await app.objection.models.task.query().findById(req.params.id).withGraphFetched('[status, creator, executor]');
+      const task = await app.objection.models.task.query().findById(req.params.id).withGraphFetched('[status, creator, executor, labels]');
       reply.render('tasks/show', { task });
       return reply;
     })
     .get('/tasks/:id/edit', { name: 'editTask', preValidation: app.authenticate }, async (req, reply) => {
-      const task = await app.objection.models.task.query().findById(req.params.id);
-      const statuses = await app.objection.models.status.query();
-      const users = await app.objection.models.user.query();
-      reply.render('tasks/edit', { task, statuses, users });
+      const [task, statuses, users, labels] = await Promise.all([
+        app.objection.models.task.query().findById(req.params.id).withGraphFetched('[labels]'),
+        app.objection.models.status.query(),
+        app.objection.models.user.query(),
+        app.objection.models.label.query(),
+      ]);
+      reply.render('tasks/edit', { task, statuses, users, labels });
       return reply;
     })
     .post('/tasks', { preValidation: app.authenticate }, async (req, reply) => {
       const task = new app.objection.models.task();
-      const { statusId, executorId, ...rest } = req.body.data;
+      const { statusId, executorId, labelIds, ...rest } = req.body.data;
       const data = {
         ...rest,
         statusId: Number(statusId),
@@ -39,14 +45,20 @@ export default (app) => {
 
       try {
         const validTask = await app.objection.models.task.fromJson(data);
-        await app.objection.models.task.query().insert(validTask);
+        const insertedTask = await app.objection.models.task.query().insert(validTask);
+        if (labelIds) {
+          await insertedTask.$relatedQuery('labels').relate([labelIds].flat().map(Number));
+        }
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
       } catch ({ data: errors }) {
-        const statuses = await app.objection.models.status.query();
-        const users = await app.objection.models.user.query();
+        const [statuses, users, labels] = await Promise.all([
+          app.objection.models.status.query(),
+          app.objection.models.user.query(),
+          app.objection.models.label.query(),
+        ]);
         req.flash('error', i18next.t('flash.tasks.create.error'));
-        reply.render('tasks/new', { task, statuses, users, errors });
+        reply.render('tasks/new', { task, statuses, users, labels, errors });
       }
 
       return reply;
@@ -54,7 +66,7 @@ export default (app) => {
     .patch('/tasks/:id', { name: 'updateTask', preValidation: app.authenticate }, async (req, reply) => {
       const task = await app.objection.models.task.query().findById(req.params.id);
 
-      const { statusId, executorId, ...rest } = req.body.data;
+      const { statusId, executorId, labelIds, ...rest } = req.body.data;
       const patchData = {
         ...rest,
         statusId: Number(statusId),
@@ -63,13 +75,20 @@ export default (app) => {
 
       try {
         await task.$query().patchAndFetch(patchData);
+        await task.$relatedQuery('labels').unrelate();
+        if (labelIds) {
+          await task.$relatedQuery('labels').relate([labelIds].flat().map(Number));
+        }
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'));
       } catch ({ data: errors }) {
-        const statuses = await app.objection.models.status.query();
-        const users = await app.objection.models.user.query();
+        const [statuses, users, labels] = await Promise.all([
+          app.objection.models.status.query(),
+          app.objection.models.user.query(),
+          app.objection.models.label.query(),
+        ]);
         req.flash('error', i18next.t('flash.tasks.update.error'));
-        reply.render('tasks/edit', { task, statuses, users, errors });
+        reply.render('tasks/edit', { task, statuses, users, labels, errors });
       }
 
       return reply;
