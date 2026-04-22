@@ -37,6 +37,19 @@ export const createStatus = async (app, params = {}) => {
   return { ...statusData, id: status.id };
 };
 
+export const buildLabel = (params = {}) => ({
+  name: faker.word.noun(),
+  ...params,
+});
+
+export const createLabel = async (app, params = {}) => {
+  const { knex } = app.objection;
+  const labelData = buildLabel(params);
+  await knex('labels').insert({ name: labelData.name });
+  const label = await app.objection.models.label.query().findOne({ name: labelData.name });
+  return { ...labelData, id: label.id };
+};
+
 export const buildTask = (params = {}) => ({
   name: faker.word.words(),
   description: faker.lorem.sentence(),
