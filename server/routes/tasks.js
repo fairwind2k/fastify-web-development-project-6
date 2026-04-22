@@ -3,8 +3,35 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/tasks', { name: 'tasks' }, async (req, reply) => {
-      const tasks = await app.objection.models.task.query().withGraphFetched('[status, creator, executor]');
-      reply.render('tasks/index', { tasks });
+      const { status, executor, label, isCreatorUser } = req.query;
+
+      let tasksQuery = app.objection.models.task.query().withGraphFetched('[status, creator, executor]');
+
+      if (status) {
+        tasksQuery = tasksQuery.where('tasks.status_id', status);
+      }
+      if (executor) {
+        tasksQuery = tasksQuery.where('tasks.executor_id', executor);
+      }
+      if (label) {
+        tasksQuery = tasksQuery.whereExists(
+          app.objection.models.task.relatedQuery('labels').where('labels.id', label),
+        );
+      }
+      if (isCreatorUser && req.user) {
+        tasksQuery = tasksQuery.where('tasks.creator_id', req.user.id);
+      }
+
+      const [tasks, statuses, users, labels] = await Promise.all([
+        tasksQuery,
+        app.objection.models.status.query(),
+        app.objection.models.user.query(),
+        app.objection.models.label.query(),
+      ]);
+
+      reply.render('tasks/index', {
+        tasks, statuses, users, labels, filterValues: req.query,
+      });
       return reply;
     })
     .get('/tasks/new', { name: 'newTask', preValidation: app.authenticate }, async (req, reply) => {

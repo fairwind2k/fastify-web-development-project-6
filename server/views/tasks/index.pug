@@ -5,28 +5,58 @@ block header
 
 block content
   a.btn.btn-primary.mb-5(href=route('newTask'))= t('views.tasks.new.link')
-  table.table.table-striped
-    thead
-      tr
-        th= t('views.tasks.id')
-        th= t('views.tasks.name')
-        th= t('views.tasks.status')
-        th= t('views.tasks.author')
-        th= t('views.tasks.executor')
-        th= t('views.tasks.createdAt')
-        th
-    tbody
-      each task in tasks
+  .card.shadow-sm
+    .card-body.p-4
+      form(action=route('tasks') method='get')
+        .row
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for='data_status')= t('views.tasks.status')
+              select.form-select(id='data_status' name='status')
+                option(value='')
+                each status in statuses
+                  option(value=status.id selected=(filterValues.status == String(status.id)))= status.name
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for='data_executor')= t('views.tasks.executor')
+              select.form-select(id='data_executor' name='executor')
+                option(value='')
+                each user in users
+                  option(value=user.id selected=(filterValues.executor == String(user.id)))= user.name
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for='data_label')= t('views.tasks.filter.label')
+              select.form-select(id='data_label' name='label')
+                option(value='')
+                each label in labels
+                  option(value=label.id selected=(filterValues.label == String(label.id)))= label.name
+        .mb-3.form-check
+          input.form-check-input(id='data_isCreatorUser' type='checkbox' name='isCreatorUser' checked=(filterValues.isCreatorUser === 'on'))
+          label.form-check-label(for='data_isCreatorUser')= t('views.tasks.filter.isCreatorUser')
+        input.btn.btn-primary(type='submit' value=t('views.tasks.filter.submit'))
+  .table-responsive
+    table.table.table-striped.mt-5
+      thead
         tr
-          td= task.id
-          td
-            a(href=route('task', { id: task.id }))= task.name
-          td= task.status.name
-          td= task.creator.name
-          td= _.get(task, 'executor.name', '')
-          td= formatDate(task.createdAt)
-          td
-            a.btn.btn-sm.btn-outline-primary.me-2(href=route('editTask', { id: task.id }))= t('views.tasks.edit.link')
-            form.d-inline(action=route('updateTask', { id: task.id }) method='post')
-              input(name='_method' type='hidden' value='DELETE')
-              button.btn.btn-sm.btn-outline-danger(type='submit')= t('views.tasks.delete.link')
+          th= t('views.tasks.id')
+          th= t('views.tasks.name')
+          th= t('views.tasks.status')
+          th= t('views.tasks.author')
+          th= t('views.tasks.executor')
+          th= t('views.tasks.createdAt')
+          th
+      tbody
+        each task in tasks
+          tr
+            td= task.id
+            td
+              a(href=route('task', { id: task.id }))= task.name
+            td= task.status.name
+            td= task.creator.name
+            td= _.get(task, 'executor.name', '')
+            td= formatDate(task.createdAt)
+            td
+              a.btn.btn-sm.btn-outline-primary.me-2(href=route('editTask', { id: task.id }))= t('views.tasks.edit.link')
+              form.d-inline(action=route('updateTask', { id: task.id }) method='post')
+                input(name='_method' type='hidden' value='DELETE')
+                button.btn.btn-sm.btn-outline-danger(type='submit')= t('views.tasks.delete.link')

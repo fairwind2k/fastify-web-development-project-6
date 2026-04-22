@@ -150,6 +150,11 @@ export default {
         labels: 'Метки',
         createdAt: 'Дата создания',
         actions: 'Действия',
+        filter: {
+          label: 'Метка',
+          isCreatorUser: 'Только мои задачи',
+          submit: 'Показать',
+        },
         new: {
           title: 'Создание задачи',
           link: 'Создать задачу',

@@ -150,6 +150,11 @@ export default {
         labels: 'Labels',
         createdAt: 'Created at',
         actions: 'Actions',
+        filter: {
+          label: 'Label',
+          isCreatorUser: 'Only my tasks',
+          submit: 'Show',
+        },
         new: {
           title: 'Create task',
           link: 'Create task',
