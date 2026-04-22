@@ -32,12 +32,18 @@ export const test = {
   pool,
 };
 
+// export const production = {
+//   client: 'sqlite3',
+//   connection: {
+//     filename: path.resolve(__dirname, 'database.sqlite'),
+//   },
+//   useNullAsDefault: true,
+//   migrations,
+//   pool,
+// };
+
 export const production = {
-  client: 'sqlite3',
-  connection: {
-    filename: path.resolve(__dirname, 'database.sqlite'),
-  },
-  useNullAsDefault: true,
+  client: 'pg',
+  connection: process.env.DATABASE_URL,
   migrations,
-  pool,
 };
