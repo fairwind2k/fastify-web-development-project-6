@@ -1,8 +1,8 @@
 {
-   "name": "fastify-nodejs-application",
+   "name": "@hexlet/code",
    "version": "0.1.0",
    "type": "module",
-   "description": "fastify-nodejs-application",
+   "description": "[![Actions Status](https://github.com/fairwind2k/fastify-web-development-project-6/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/fairwind2k/fastify-web-development-project-6/actions)",
    "main": "./server/plugin.js",
    "engines": {
       "node": ">=16.x"
@@ -21,16 +21,12 @@
          "dotenv/config"
       ]
    },
-   "author": "Stanislav Dzisiak",
+   "author": "Natalia Flerk",
    "license": "ISC",
    "repository": {
       "type": "git",
-      "url": "git+https://github.com/hexlet-boilerplates/fastify-nodejs-application.git"
+      "url": "https://github.com/fairwind2k/fastify-web-development-project-6"
    },
-   "bugs": {
-      "url": "https://github.com/hexlet-boilerplates/fastify-nodejs-application/issues"
-   },
-   "homepage": "https://github.com/hexlet-boilerplates/fastify-nodejs-application.git#readme",
    "dependencies": {
       "@fastify/formbody": "^7.4.0",
       "@fastify/passport": "^2.5.0",
