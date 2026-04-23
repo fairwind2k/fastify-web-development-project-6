@@ -133,7 +133,7 @@ export default {
         actions: 'Действия',
         edit: {
           title: 'Редактирование пользователя',
-          submit: 'Сохранить',
+          submit: 'Изменить',
           link: 'Изменить',
         },
         delete: {
