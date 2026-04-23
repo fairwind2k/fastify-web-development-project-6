@@ -12,7 +12,7 @@ export default (app) => {
       }
       if (!user) {
         req.flash('error', i18next.t('flash.session.create.error'));
-        reply.redirect(app.reverse('newSession'));
+        reply.render('session/new', { signInForm: req.body.data });
         return reply;
       }
       await req.logIn(user);
