@@ -25,6 +25,7 @@ import getHelpers from './helpers/index.js';
 import * as knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
+import rollbar from '../rollbar.cjs';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
@@ -137,6 +138,12 @@ export default async (app, _options) => {
   setUpStaticAssets(app);
   addRoutes(app);
   addHooks(app);
+
+  // @ts-ignore
+  app.setErrorHandler((error, req, reply) => {
+    rollbar.error(error, req);
+    reply.send(error);
+  });
 
   return app;
 };
