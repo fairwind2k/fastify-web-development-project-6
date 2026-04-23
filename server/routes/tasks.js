@@ -3,7 +3,9 @@ import i18next from 'i18next';
 export default (app) => {
   app
     .get('/tasks', { name: 'tasks' }, async (req, reply) => {
-      const { status, executor, label, isCreatorUser } = req.query;
+      const {
+        status, executor, label, isCreatorUser,
+      } = req.query;
 
       let tasksQuery = app.objection.models.task.query().withGraphFetched('[status, creator, executor]');
 
@@ -41,7 +43,9 @@ export default (app) => {
         app.objection.models.user.query(),
         app.objection.models.label.query(),
       ]);
-      reply.render('tasks/new', { task, statuses, users, labels });
+      reply.render('tasks/new', {
+        task, statuses, users, labels,
+      });
       return reply;
     })
     .get('/tasks/:id', { name: 'task' }, async (req, reply) => {
@@ -56,12 +60,16 @@ export default (app) => {
         app.objection.models.user.query(),
         app.objection.models.label.query(),
       ]);
-      reply.render('tasks/edit', { task, statuses, users, labels });
+      reply.render('tasks/edit', {
+        task, statuses, users, labels,
+      });
       return reply;
     })
     .post('/tasks', { preValidation: app.authenticate }, async (req, reply) => {
       const task = new app.objection.models.task();
-      const { statusId, executorId, labelIds, ...rest } = req.body.data;
+      const {
+        statusId, executorId, labelIds, ...rest
+      } = req.body.data;
       const data = {
         ...rest,
         statusId: Number(statusId),
@@ -85,7 +93,9 @@ export default (app) => {
           app.objection.models.label.query(),
         ]);
         req.flash('error', i18next.t('flash.tasks.create.error'));
-        reply.render('tasks/new', { task, statuses, users, labels, errors });
+        reply.render('tasks/new', {
+          task, statuses, users, labels, errors,
+        });
       }
 
       return reply;
@@ -93,7 +103,9 @@ export default (app) => {
     .patch('/tasks/:id', { name: 'updateTask', preValidation: app.authenticate }, async (req, reply) => {
       const task = await app.objection.models.task.query().findById(req.params.id);
 
-      const { statusId, executorId, labelIds, ...rest } = req.body.data;
+      const {
+        statusId, executorId, labelIds, ...rest
+      } = req.body.data;
       const patchData = {
         ...rest,
         statusId: Number(statusId),
@@ -115,7 +127,9 @@ export default (app) => {
           app.objection.models.label.query(),
         ]);
         req.flash('error', i18next.t('flash.tasks.update.error'));
-        reply.render('tasks/edit', { task, statuses, users, labels, errors });
+        reply.render('tasks/edit', {
+          task, statuses, users, labels, errors,
+        });
       }
 
       return reply;

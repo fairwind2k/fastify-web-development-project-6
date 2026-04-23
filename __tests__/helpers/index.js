@@ -56,7 +56,9 @@ export const buildTask = (params = {}) => ({
   ...params,
 });
 
-export const createTask = async (app, { statusId, creatorId, executorId = null, ...params } = {}) => {
+export const createTask = async (app, {
+  statusId, creatorId, executorId = null, ...params
+} = {}) => {
   const { knex } = app.objection;
   const taskData = buildTask(params);
   const [id] = await knex('tasks').insert({
@@ -66,7 +68,9 @@ export const createTask = async (app, { statusId, creatorId, executorId = null, 
     creator_id: creatorId,
     executor_id: executorId,
   });
-  return { ...taskData, id, statusId, creatorId, executorId };
+  return {
+    ...taskData, id, statusId, creatorId, executorId,
+  };
 };
 
 export const signIn = async (app, { email, password }) => {

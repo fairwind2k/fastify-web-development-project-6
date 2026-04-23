@@ -56,8 +56,12 @@ describe('test tasks filter', () => {
 
   it('filter by executor', async () => {
     const otherUser = await createUser(app);
-    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id, executorId: user.id });
-    const task2 = await createTask(app, { statusId: status.id, creatorId: user.id, executorId: otherUser.id });
+    const task1 = await createTask(app, {
+      statusId: status.id, creatorId: user.id, executorId: user.id,
+    });
+    const task2 = await createTask(app, {
+      statusId: status.id, creatorId: user.id, executorId: otherUser.id,
+    });
 
     const response = await app.inject({
       method: 'GET',
@@ -120,9 +124,15 @@ describe('test tasks filter', () => {
   it('filter by status and executor combined', async () => {
     const otherStatus = await createStatus(app);
     const otherUser = await createUser(app);
-    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id, executorId: user.id });
-    const task2 = await createTask(app, { statusId: status.id, creatorId: user.id, executorId: otherUser.id });
-    const task3 = await createTask(app, { statusId: otherStatus.id, creatorId: user.id, executorId: user.id });
+    const task1 = await createTask(app, {
+      statusId: status.id, creatorId: user.id, executorId: user.id,
+    });
+    const task2 = await createTask(app, {
+      statusId: status.id, creatorId: user.id, executorId: otherUser.id,
+    });
+    const task3 = await createTask(app, {
+      statusId: otherStatus.id, creatorId: user.id, executorId: user.id,
+    });
 
     const response = await app.inject({
       method: 'GET',
