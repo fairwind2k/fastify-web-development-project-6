@@ -7,20 +7,6 @@ block content
   .row.justify-content-center
     .col-md-6
       +formFor()(action=route('session') method='post')
-        .mb-3
-          label(for='data_email')= t('views.users.email')
-          input.form-control(
-            id='data_email'
-            type="text"
-            name="data[email]"
-            placeholder=t('views.users.email')
-          )
-        .mb-3
-          label(for='data_password')= t('views.users.password')
-          input.form-control(
-            id='data_password'
-            type="password"
-            name="data[password]"
-            placeholder=t('views.users.password')
-          )
+        +input(signInForm, 'email', errors, true, t('views.users.email'))(type="text" placeholder=t('views.users.email'))
+        +input(signInForm, 'password', errors, true, t('views.users.password'))(type="password" placeholder=t('views.users.password'))
         +submit(signInForm)(value=t('views.session.new.submit'))

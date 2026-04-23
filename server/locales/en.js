@@ -3,6 +3,9 @@
 export default {
   translation: {
     appName: 'Task Manager',
+    errors: {
+      required: "Can't be blank",
+    },
     flash: {
       session: {
         create: {

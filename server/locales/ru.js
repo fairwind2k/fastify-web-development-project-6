@@ -3,6 +3,9 @@
 export default {
   translation: {
     appName: 'Менеджер задач',
+    errors: {
+      required: 'Не может быть пустым',
+    },
     flash: {
       session: {
         create: {
