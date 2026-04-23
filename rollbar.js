@@ -1,6 +1,6 @@
-var Rollbar = require('rollbar');
+import Rollbar from 'rollbar';
 
-var rollbar = new Rollbar({
+const rollbar = new Rollbar({
   accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
@@ -10,4 +10,4 @@ var rollbar = new Rollbar({
   environment: process.env.ROLLBAR_ENVIRONMENT,
 });
 
-module.exports = rollbar;
+export default rollbar;

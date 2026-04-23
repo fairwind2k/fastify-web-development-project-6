@@ -25,7 +25,7 @@ import getHelpers from './helpers/index.js';
 import * as knexConfig from '../knexfile.js';
 import models from './models/index.js';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
-import rollbar from '../rollbar.cjs';
+import rollbar from '../rollbar.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
 
