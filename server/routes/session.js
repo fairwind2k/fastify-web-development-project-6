@@ -11,8 +11,10 @@ export default (app) => {
         return app.httpErrors.internalServerError(err);
       }
       if (!user) {
+        const { email } = req.body.data ?? {};
+        const errors = email ? {} : { email: [{ message: i18next.t('errors.required') }] };
         req.flash('error', i18next.t('flash.session.create.error'));
-        reply.render('session/new', { signInForm: req.body.data });
+        reply.render('session/new', { signInForm: req.body.data, errors });
         return reply;
       }
       await req.logIn(user);
