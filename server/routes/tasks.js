@@ -138,7 +138,7 @@ export default (app) => {
     })
     .delete('/tasks/:id', { preValidation: app.authenticate }, async (req, reply) => {
       const task = await app.objection.models.task.query().findById(req.params.id);
-      if (task.creatorId !== req.user.id) {
+      if (!task || task.creatorId !== req.user.id) {
         req.flash('error', i18next.t('flash.tasks.delete.error'));
         reply.redirect(app.reverse('tasks'));
         return reply;
