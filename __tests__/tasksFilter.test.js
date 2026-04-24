@@ -41,8 +41,8 @@ describe('test tasks filter', () => {
 
   it('filter by status', async () => {
     const otherStatus = await createStatus(app);
-    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id });
-    const task2 = await createTask(app, { statusId: otherStatus.id, creatorId: user.id });
+    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id, name: 'status-match-task-aaa' });
+    const task2 = await createTask(app, { statusId: otherStatus.id, creatorId: user.id, name: 'status-other-task-zzz' });
 
     const response = await app.inject({
       method: 'GET',
@@ -57,10 +57,10 @@ describe('test tasks filter', () => {
   it('filter by executor', async () => {
     const otherUser = await createUser(app);
     const task1 = await createTask(app, {
-      statusId: status.id, creatorId: user.id, executorId: user.id,
+      statusId: status.id, creatorId: user.id, executorId: user.id, name: 'executor-match-task-aaa',
     });
     const task2 = await createTask(app, {
-      statusId: status.id, creatorId: user.id, executorId: otherUser.id,
+      statusId: status.id, creatorId: user.id, executorId: otherUser.id, name: 'executor-other-task-zzz',
     });
 
     const response = await app.inject({
@@ -75,8 +75,8 @@ describe('test tasks filter', () => {
 
   it('filter by label', async () => {
     const label = await createLabel(app);
-    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id });
-    const task2 = await createTask(app, { statusId: status.id, creatorId: user.id });
+    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id, name: 'labeled-unique-task-aaa' });
+    const task2 = await createTask(app, { statusId: status.id, creatorId: user.id, name: 'unlabeled-unique-task-zzz' });
 
     await knex('tasks_labels').insert({ task_id: task1.id, label_id: label.id });
 
@@ -125,13 +125,13 @@ describe('test tasks filter', () => {
     const otherStatus = await createStatus(app);
     const otherUser = await createUser(app);
     const task1 = await createTask(app, {
-      statusId: status.id, creatorId: user.id, executorId: user.id,
+      statusId: status.id, creatorId: user.id, executorId: user.id, name: 'combined-match-task-aaa',
     });
     const task2 = await createTask(app, {
-      statusId: status.id, creatorId: user.id, executorId: otherUser.id,
+      statusId: status.id, creatorId: user.id, executorId: otherUser.id, name: 'combined-other-exec-zzz',
     });
     const task3 = await createTask(app, {
-      statusId: otherStatus.id, creatorId: user.id, executorId: user.id,
+      statusId: otherStatus.id, creatorId: user.id, executorId: user.id, name: 'combined-other-status-yyy',
     });
 
     const response = await app.inject({

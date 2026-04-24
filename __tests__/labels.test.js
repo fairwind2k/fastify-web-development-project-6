@@ -3,7 +3,9 @@
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import { buildLabel, createLabel } from './helpers/index.js';
+import {
+  buildLabel, createLabel, createUser, createStatus, createTask,
+} from './helpers/index.js';
 
 describe('test labels CRUD', () => {
   let app;
@@ -22,6 +24,10 @@ describe('test labels CRUD', () => {
   });
 
   beforeEach(async () => {
+    await knex('tasks_labels').del();
+    await knex('tasks').del();
+    await knex('statuses').del();
+    await knex('users').del();
     await knex('labels').del();
   });
 
@@ -124,5 +130,22 @@ describe('test labels CRUD', () => {
     expect(response.statusCode).toBe(302);
     const deleted = await models.label.query().findById(label.id);
     expect(deleted).toBeUndefined();
+  });
+
+  it('delete - cannot delete label associated with a task', async () => {
+    const user = await createUser(app);
+    const status = await createStatus(app);
+    const label = await createLabel(app);
+    const task = await createTask(app, { statusId: status.id, creatorId: user.id });
+    await knex('tasks_labels').insert({ task_id: task.id, label_id: label.id });
+
+    const response = await app.inject({
+      method: 'DELETE',
+      url: `/labels/${label.id}`,
+    });
+
+    expect(response.statusCode).toBe(302);
+    const notDeleted = await models.label.query().findById(label.id);
+    expect(notDeleted).toBeDefined();
   });
 });
