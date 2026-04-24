@@ -92,8 +92,8 @@ describe('test tasks filter', () => {
 
   it('filter by isCreatorUser - authenticated', async () => {
     const otherUser = await createUser(app);
-    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id });
-    const task2 = await createTask(app, { statusId: status.id, creatorId: otherUser.id });
+    const task1 = await createTask(app, { statusId: status.id, creatorId: user.id, name: 'my-unique-task-aaa' });
+    const task2 = await createTask(app, { statusId: status.id, creatorId: otherUser.id, name: 'other-unique-task-zzz' });
 
     const response = await app.inject({
       method: 'GET',
