@@ -82,7 +82,8 @@ export default (app) => {
         const validTask = await app.objection.models.task.fromJson(data);
         const insertedTask = await app.objection.models.task.query().insert(validTask);
         if (labelIds) {
-          await insertedTask.$relatedQuery('labels').relate([labelIds].flat().map(Number));
+          const ids = [labelIds].flat().map(Number);
+          await Promise.all(ids.map((id) => insertedTask.$relatedQuery('labels').relate(id)));
         }
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
@@ -116,7 +117,8 @@ export default (app) => {
         await task.$query().patchAndFetch(patchData);
         await task.$relatedQuery('labels').unrelate();
         if (labelIds) {
-          await task.$relatedQuery('labels').relate([labelIds].flat().map(Number));
+          const ids = [labelIds].flat().map(Number);
+          await Promise.all(ids.map((id) => task.$relatedQuery('labels').relate(id)));
         }
         req.flash('info', i18next.t('flash.tasks.update.success'));
         reply.redirect(app.reverse('tasks'));
