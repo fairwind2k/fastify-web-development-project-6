@@ -10,6 +10,6 @@ const rollbar = process.env.ROLLBAR_ACCESS_TOKEN
     },
     environment: process.env.ROLLBAR_ENVIRONMENT,
   })
-  : { error: () => {} };
+  : { log: () => {}, info: () => {}, warn: () => {}, error: () => {}, critical: () => {} };
 
 export default rollbar;
