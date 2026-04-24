@@ -72,7 +72,7 @@ export default (app) => {
       } = req.body.data;
       const data = {
         ...rest,
-        statusId: Number(statusId),
+        statusId: statusId ? Number(statusId) : undefined,
         executorId: executorId ? Number(executorId) : undefined,
         creatorId: req.user.id,
       };

@@ -7,15 +7,7 @@ block content
   .row.justify-content-center
     .col-md-6
       +formFor()(action=route('tasks') method='post')
-        .mb-3
-          label(for='data_name')= t('views.tasks.name')
-          input.form-control(
-            id='data_name'
-            type='text'
-            name='data[name]'
-            value=task.name || ''
-            placeholder=t('views.tasks.name')
-          )
+        +input(task, 'name', errors, true, t('views.tasks.name'))(type='text' placeholder=t('views.tasks.name'))
         .mb-3
           label(for='data_description')= t('views.tasks.description')
           textarea.form-control(
@@ -24,11 +16,14 @@ block content
             rows='3'
           )= task.description || ''
         .mb-3
+          - const statusErrors = errors && _.get(errors, 'statusId')
           label(for='data_statusId')= t('views.tasks.status')
-          select.form-control(id='data_statusId' name='data[statusId]')
+          select.form-control(id='data_statusId' name='data[statusId]' class=(statusErrors ? 'is-invalid' : ''))
             option(value='')
             each status in statuses
               option(value=status.id selected=(task.statusId == status.id))= status.name
+          if statusErrors
+            .invalid-feedback= statusErrors.map(({ message }) => message).join('. ')
         .mb-3
           label(for='data_executorId')= t('views.tasks.executor')
           select.form-control(id='data_executorId' name='data[executorId]')
