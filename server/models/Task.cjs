@@ -1,5 +1,4 @@
 
-const { Model } = require('objection');
 const BaseModel = require('./BaseModel.cjs');
 
 module.exports = class Task extends BaseModel {
@@ -13,7 +12,7 @@ module.exports = class Task extends BaseModel {
     const Label = require('./Label.cjs');
     return {
       labels: {
-        relation: Model.ManyToManyRelation,
+        relation: BaseModel.ManyToManyRelation,
         modelClass: Label,
         join: {
           from: 'tasks.id',
@@ -25,17 +24,17 @@ module.exports = class Task extends BaseModel {
         },
       },
       status: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: Status,
         join: { from: 'tasks.status_id', to: 'statuses.id' },
       },
       creator: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: User,
         join: { from: 'tasks.creator_id', to: 'users.id' },
       },
       executor: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: User,
         join: { from: 'tasks.executor_id', to: 'users.id' },
       },

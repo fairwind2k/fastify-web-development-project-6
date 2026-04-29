@@ -91,12 +91,6 @@ const registerPlugins = async (app) => {
     },
   });
 
-  // fastifyPassport.registerUserDeserializer(
-  //   (user) => app.objection.models.user.query().findById(user.id),
-  // );
-  // fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
-  // сериализатор сохраняет в сессию весь ORM-объект пользователя, а не только его ID,
-  // а нужно только ID:
   fastifyPassport.registerUserDeserializer(
     async (id) => {
       const user = await app.objection.models.user.query().findById(id);
@@ -141,7 +135,7 @@ export default async (app, _options) => {
   // @ts-ignore
   app.setErrorHandler((error, req, reply) => {
     rollbar.error(error, req.raw);
-    reply.send(error);
+    reply.status(500).send('Internal Server Error');
   });
 
   return app;

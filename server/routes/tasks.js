@@ -80,14 +80,17 @@ export default (app) => {
 
       try {
         const validTask = await app.objection.models.task.fromJson(data);
-        const insertedTask = await app.objection.models.task.query().insert(validTask);
-        if (labelIds) {
-          const ids = [labelIds].flat().map(Number);
-          await Promise.all(ids.map((id) => insertedTask.$relatedQuery('labels').relate(id)));
-        }
+        await app.objection.models.task.transaction(async (trx) => {
+          const insertedTask = await app.objection.models.task.query(trx).insert(validTask);
+          if (labelIds) {
+            const ids = [labelIds].flat().map(Number);
+            await Promise.all(ids.map((id) => insertedTask.$relatedQuery('labels').relate(id).transacting(trx)));
+          }
+        });
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
-      } catch ({ data: errors }) {
+      } catch (error) {
+        if (!error.data) throw error;
         const [statuses, users, labels] = await Promise.all([
           app.objection.models.status.query(),
           app.objection.models.user.query(),
@@ -95,7 +98,7 @@ export default (app) => {
         ]);
         req.flash('error', i18next.t('flash.tasks.create.error'));
         reply.render('tasks/new', {
-          task, statuses, users, labels, errors,
+          task, statuses, users, labels, errors: error.data,
         });
       }
 
