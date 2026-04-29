@@ -7,5 +7,10 @@ tmp/
 temp/
 database.sqlite
 .env
+.env.example
 .github/dependabot.yml
 .github/workflows/nodejs.yml
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+DOCKER.md
